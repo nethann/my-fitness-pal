@@ -1,15 +1,16 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import Dropdown from 'react-bootstrap/Dropdown'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import CustomModal from "./Updatedgoalsmodal"
 
 function App() {
+  // Load from localStorage or use default 0
   const [calGoal, setcalGoal] = useState(() => {
-    const saved = localStorage.getItem('calGoal');
+    const saved = localStorage.getItem('calGoal')
     return saved ? Number(saved) : 0
-  })
-
+  });
+  
   const [proteinGoal, setproteinGoal] = useState(() => {
     const saved = localStorage.getItem('proteinGoal')
     return saved ? Number(saved) : 0
@@ -19,9 +20,21 @@ function App() {
     const saved = localStorage.getItem('carbsGoal')
     return saved ? Number(saved) : 0
   });
-
   
   const [showModal, setshowModal] = useState(false);
+
+  // Save to localStorage whenever goals change
+  useEffect(() => {
+    localStorage.setItem('calGoal', calGoal.toString())
+  }, [calGoal])
+
+  useEffect(() => {
+    localStorage.setItem('proteinGoal', proteinGoal.toString())
+  }, [proteinGoal])
+
+  useEffect(() => {
+    localStorage.setItem('carbsGoal', carbsGoal.toString())
+  }, [carbsGoal])
 
   const handleSave = () => {
     console.log('saving goals: ', {calGoal, proteinGoal, carbsGoal});
