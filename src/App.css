@@ -2,10 +2,12 @@
     background-color: black;
 }
 
-
-
 body{
     padding: 0;
+    margin: 0;
+}
+
+p {
     margin: 0;
 }
 
@@ -41,7 +43,6 @@ button {
     border: 0px solid;
 }
 
-/* Progress bar styling - override Bootstrap */
 .fitness-info .progress {
     height: 20px !important;
     background-color: #333 !important;
@@ -51,4 +52,39 @@ button {
 
 .fitness-info .progress .progress-bar {
     border-radius: 10px !important;
+}
+
+
+
+.daily-meals-list{
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+}
+
+
+.daily-meal{
+    border: 1px solid #333;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.meal-delete-btn{
+    background-color: rgba(255, 0, 0, 0.425);
+}
+
+button{
+    border: 0px solid;
+    padding: 10px;
+    color: white;
+}
+
+.editGoals-btn{
+    background-color: rgba(127, 255, 212, 0.301);
+    border-radius: 5px;
+}
+
+.addMeals-btn{
+    border-radius: 5px;
+    background-color: darkslateblue;
 }

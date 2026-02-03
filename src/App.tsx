@@ -108,7 +108,7 @@ function App() {
           <ProgressBar variant="success" now={progressLoader(totalProtein, proteinGoal)} />
           <p>Carbs Goal: {carbsGoal}g | Current: {totalCarbs}g</p>
           <ProgressBar variant="warning" now={progressLoader(totalCarbs, carbsGoal)} />
-          <button onClick={() => setshowGoalsModal(true)}>Edit Goals</button>
+          <button className='editGoals-btn' onClick={() => setshowGoalsModal(true)}>Edit Goals</button>
         </div>
 
         <div className='fitness-meals'>
@@ -116,15 +116,15 @@ function App() {
           {meals.length === 0 ? (
             <p>No meals added yet</p>
           ) : (
-            <div>
+            <div className='daily-meals-list'>
               {meals.map((meal) => (
-                <div key={meal.id} style={{ border: '1px solid #ccc', padding: '10px', margin: '10px 0' }}>
+                <div className = "daily-meal" key={meal.id}>
                   <h3>{meal.mealType}</h3>
                   <p>Calories: {meal.mealCal}</p>
                   <p>Protein: {meal.mealProtein}g</p>
                   <p>Carbs: {meal.mealCarbs}g</p>
                   <p>Sugar: {meal.mealSugar}g</p>
-                  <button onClick={() => handleDeleteMeal(meal.id)}>Delete</button>
+                  <button className='meal-delete-btn' onClick={() => handleDeleteMeal(meal.id)}>Delete</button>
                 </div>
               ))}
             </div>
@@ -132,7 +132,7 @@ function App() {
         </div>
 
         <div className='add-meals'>
-          <button onClick={() => setShowMealModal(true)}>Add Meal</button>
+          <button className='addMeals-btn' onClick={() => setShowMealModal(true)}>Add Meal</button>
 
           <CustomMealModal
             show={showMealModal}
