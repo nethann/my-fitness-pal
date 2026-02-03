@@ -5,9 +5,22 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import CustomModal from "./Updatedgoalsmodal"
 
 function App() {
-  const [calGoal, setcalGoal] = useState(0);
-  const [proteinGoal, setproteinGoal] = useState(0);
-  const [carbsGoal, setcarbsGoal] = useState(0);
+  const [calGoal, setcalGoal] = useState(() => {
+    const saved = localStorage.getItem('calGoal');
+    return saved ? Number(saved) : 0
+  })
+
+  const [proteinGoal, setproteinGoal] = useState(() => {
+    const saved = localStorage.getItem('proteinGoal')
+    return saved ? Number(saved) : 0
+  });
+  
+  const [carbsGoal, setcarbsGoal] = useState(() => {
+    const saved = localStorage.getItem('carbsGoal')
+    return saved ? Number(saved) : 0
+  });
+
+  
   const [showModal, setshowModal] = useState(false);
 
   const handleSave = () => {
