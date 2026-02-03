@@ -1,4 +1,50 @@
+:root {
+    background-color: black;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body{
     padding: 0;
     margin: 0;
+}
+
+.parent-container {
+    min-height: 100vh;
+    background-color: black;
+    display: flex;
+    /* ADD THIS */
+    justify-content: center;
+    /* ADD THIS */
+    align-items: center;
+    /* ADD THIS */
+}
+
+.main-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    gap: 5em;
+
+    /* background-color: pink; */
+    color: white;
+
+    width: 80%;
+}
+
+
+.main-container div{
+    width: 100%;
+}
+
+
+
+button {
+    border: 0px solid;
 }

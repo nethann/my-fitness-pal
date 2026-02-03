@@ -1,29 +1,47 @@
 import { useState, useEffect } from 'react'
 import './App.css'
-import Dropdown from 'react-bootstrap/Dropdown'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import CustomModal from "./Components/Updatedgoalsmodal"
+import CustomMealModal from "./Components/Addmealsmodal"
+import ProgressBar from 'react-bootstrap/ProgressBar';
+
+
+interface Meal {
+  id: number
+  mealType: string
+  mealCal: number
+  mealProtein: number
+  mealCarbs: number
+  mealSugar: number
+}
 
 function App() {
-  // Load from localStorage or use default 0
+  // Load goals from localStorage
   const [calGoal, setcalGoal] = useState(() => {
     const saved = localStorage.getItem('calGoal')
     return saved ? Number(saved) : 0
   });
-  
+
   const [proteinGoal, setproteinGoal] = useState(() => {
     const saved = localStorage.getItem('proteinGoal')
     return saved ? Number(saved) : 0
   });
-  
+
   const [carbsGoal, setcarbsGoal] = useState(() => {
     const saved = localStorage.getItem('carbsGoal')
     return saved ? Number(saved) : 0
   });
-  
-  const [showModal, setshowModal] = useState(false);
 
-  // Save to localStorage whenever goals change
+  // Load meals from localStorage
+  const [meals, setMeals] = useState<Meal[]>(() => {
+    const saved = localStorage.getItem('meals')
+    return saved ? JSON.parse(saved) : []
+  });
+
+  const [showGoalsModal, setshowGoalsModal] = useState(false);
+  const [showMealModal, setShowMealModal] = useState(false)
+
+  // Save goals to localStorage whenever they change
   useEffect(() => {
     localStorage.setItem('calGoal', calGoal.toString())
   }, [calGoal])
@@ -36,73 +54,115 @@ function App() {
     localStorage.setItem('carbsGoal', carbsGoal.toString())
   }, [carbsGoal])
 
+  // Save meals to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem('meals', JSON.stringify(meals))
+  }, [meals])
+
   const handleSave = () => {
-    console.log('saving goals: ', {calGoal, proteinGoal, carbsGoal});
-    setshowModal(false);
+    console.log('saving goals: ', { calGoal, proteinGoal, carbsGoal });
+    setshowGoalsModal(false);
   }
 
+  // THIS IS THE NEW FUNCTION YOU NEED!
+  const handleSaveMeal = (mealData: any) => {
+    const newMeal: Meal = {
+      id: Date.now(), // Simple unique ID
+      ...mealData
+    }
+    setMeals([...meals, newMeal]) // Add new meal to the array
+    console.log('Meal saved:', newMeal)
+  }
+
+  // Function to delete a meal
+  const handleDeleteMeal = (id: number) => {
+    setMeals(meals.filter(meal => meal.id !== id))
+  }
+
+  // Calculate total calories and protein from all meals
+  const totalCalories = meals.reduce((sum, meal) => sum + meal.mealCal, 0)
+  const totalProtein = meals.reduce((sum, meal) => sum + meal.mealProtein, 0)
+  const totalCarbs = meals.reduce((sum, meal) => sum + meal.mealCarbs, 0)
+
   return (
-    <div className='main-container'>
-      <div className='fitness-info'>
-        <h1>Fitness Info</h1>
-        <p>Cal Goal: {calGoal}</p>
-        <p>Protein Goal: {proteinGoal}</p>
-        <p>Carbs Goal: {carbsGoal}</p>
-        <button onClick={() => setshowModal(true)}>Edit Goals</button>
-      </div>
+    <div className='parent-container'>
+      <div className='main-container'>
+        <div className='fitness-info'>
+          <h1>Fitness Info</h1>
+          <p>Cal Goal: {calGoal} | Current: {totalCalories}</p>
+          <ProgressBar variant="success" now={40} />
+          <p>Protein Goal: {proteinGoal}g | Current: {totalProtein}g</p>
+          <ProgressBar variant="success" now={40} />
+          <p>Carbs Goal: {carbsGoal}g | Current: {totalCarbs}g</p>
+          <ProgressBar variant="success" now={40} />
+          <button onClick={() => setshowGoalsModal(true)}>Edit Goals</button>
+        </div>
 
-      <div className='fitness-meals'>
-        <h1>Fitness Meals</h1>
-      </div>
+        <div className='fitness-meals'>
+          <h1>Fitness Meals</h1>
+          {meals.length === 0 ? (
+            <p>No meals added yet</p>
+          ) : (
+            <div>
+              {meals.map((meal) => (
+                <div key={meal.id} style={{ border: '1px solid #ccc', padding: '10px', margin: '10px 0' }}>
+                  <h3>{meal.mealType}</h3>
+                  <p>Calories: {meal.mealCal}</p>
+                  <p>Protein: {meal.mealProtein}g</p>
+                  <p>Carbs: {meal.mealCarbs}g</p>
+                  <p>Sugar: {meal.mealSugar}g</p>
+                  <button onClick={() => handleDeleteMeal(meal.id)}>Delete</button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
 
-      <div className='add-meals'>
-        <Dropdown data-bs-theme="dark">
-          <Dropdown.Toggle variant="success" id="dropdown-basic">
-            Add Meal
-          </Dropdown.Toggle>
+        <div className='add-meals'>
+          <button onClick={() => setShowMealModal(true)}>Add Meal</button>
 
-          <Dropdown.Menu>
-            <Dropdown.Item href="#/action-1">Breakfast</Dropdown.Item>
-            <Dropdown.Item href="#/action-2">Lunch</Dropdown.Item>
-            <Dropdown.Item href="#/action-3">Dinner</Dropdown.Item>
-            <Dropdown.Item href="#/action-3">Snack</Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
-      </div>
-
-      <CustomModal
-        show={showModal}
-        onHide={() => setshowModal(false)}
-        title="Edit Fitness Goals"
-        onSave={handleSave}
-      >
-        <div>
-          <label>Calorie Goal:</label>
-          <input
-            type="number"
-            className="form-control mb-2"
-            value={calGoal}
-            onChange={(e) => setcalGoal(Number(e.target.value))}
-          />
-          
-          <label>Protein Goal (g):</label>
-          <input
-            type="number"
-            className="form-control mb-2"
-            value={proteinGoal}
-            onChange={(e) => setproteinGoal(Number(e.target.value))}
-          />
-          
-          <label>Carbs Goal (g):</label>
-          <input
-            type="number"
-            className="form-control"
-            value={carbsGoal}
-            onChange={(e) => setcarbsGoal(Number(e.target.value))}
+          <CustomMealModal
+            show={showMealModal}
+            onHide={() => setShowMealModal(false)}
+            onSave={handleSaveMeal}
           />
         </div>
-      </CustomModal>
+
+        <CustomModal
+          show={showGoalsModal}
+          onHide={() => setshowGoalsModal(false)}
+          title="Edit Fitness Goals"
+          onSave={handleSave}
+        >
+          <div>
+            <label>Calorie Goal:</label>
+            <input
+              type="number"
+              className="form-control mb-2"
+              value={calGoal}
+              onChange={(e) => setcalGoal(Number(e.target.value))}
+            />
+
+            <label>Protein Goal (g):</label>
+            <input
+              type="number"
+              className="form-control mb-2"
+              value={proteinGoal}
+              onChange={(e) => setproteinGoal(Number(e.target.value))}
+            />
+
+            <label>Carbs Goal (g):</label>
+            <input
+              type="number"
+              className="form-control"
+              value={carbsGoal}
+              onChange={(e) => setcarbsGoal(Number(e.target.value))}
+            />
+          </div>
+        </CustomModal>
+      </div>
     </div>
+
   )
 }
 
