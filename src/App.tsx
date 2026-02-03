@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
 import './App.css'
-import 'bootstrap/dist/css/bootstrap.min.css'
 import CustomModal from "./Components/Updatedgoalsmodal"
 import CustomMealModal from "./Components/Addmealsmodal"
 import ProgressBar from 'react-bootstrap/ProgressBar';
+
+
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 
 interface Meal {
@@ -84,17 +86,28 @@ function App() {
   const totalProtein = meals.reduce((sum, meal) => sum + meal.mealProtein, 0)
   const totalCarbs = meals.reduce((sum, meal) => sum + meal.mealCarbs, 0)
 
+  const progressLoader = (currentCal: number, totalCal: number) => {
+    console.log('DEBUG:', { currentCal, totalCal }); // ADD THIS
+
+    if (totalCal === 0) return 0;
+    const percentage = (currentCal / totalCal) * 100;
+
+    console.log('Percentage:', percentage); // ADD THIS
+
+    return Math.min(Math.max(percentage, 0), 100);
+  }
+
   return (
     <div className='parent-container'>
       <div className='main-container'>
         <div className='fitness-info'>
           <h1>Fitness Info</h1>
           <p>Cal Goal: {calGoal} | Current: {totalCalories}</p>
-          <ProgressBar variant="success" now={40} />
+          <ProgressBar variant="primary" now={progressLoader(totalCalories, calGoal)} />
           <p>Protein Goal: {proteinGoal}g | Current: {totalProtein}g</p>
-          <ProgressBar variant="success" now={40} />
+          <ProgressBar variant="success" now={progressLoader(totalProtein, proteinGoal)} />
           <p>Carbs Goal: {carbsGoal}g | Current: {totalCarbs}g</p>
-          <ProgressBar variant="success" now={40} />
+          <ProgressBar variant="warning" now={progressLoader(totalCarbs, carbsGoal)} />
           <button onClick={() => setshowGoalsModal(true)}>Edit Goals</button>
         </div>
 
