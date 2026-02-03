@@ -1,4 +1,3 @@
-import type { ReactNode } from 'react'
 import { Modal, Button, Form } from 'react-bootstrap'
 import { useState } from 'react'
 
