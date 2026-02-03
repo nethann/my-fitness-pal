@@ -17,11 +17,8 @@ body{
     min-height: 100vh;
     background-color: black;
     display: flex;
-    /* ADD THIS */
     justify-content: center;
-    /* ADD THIS */
     align-items: center;
-    /* ADD THIS */
 }
 
 .main-container {
@@ -32,7 +29,6 @@ body{
 
     gap: 5em;
 
-    /* background-color: pink; */
     color: white;
 
     width: 80%;
