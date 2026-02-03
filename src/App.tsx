@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import './App.css'
 import Dropdown from 'react-bootstrap/Dropdown'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import CustomModal from "./Updatedgoalsmodal"
+import CustomModal from "./Components/Updatedgoalsmodal"
 
 function App() {
   // Load from localStorage or use default 0
