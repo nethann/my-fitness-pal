@@ -1,7 +1,6 @@
 
-> # Fitness app 
-> ## Features: 
->
-> - Edit Goals (Keep progress of your day with progress bar!)
-> - Add Meals (Input your meals to keep track)
-> - Delete Meals 
+# Fitness app 
+## Features: 
+- Edit Goals (Keep progress of your day with progress bar!)
+- Add Meals (Input your meals to keep track)
+- Delete Meals 
