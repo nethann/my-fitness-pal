@@ -73,6 +73,6 @@ export default defineConfig([
 ```
 
 
-## run the application 
+## Run the application 
 
 > npm run dev
